@@ -24,6 +24,7 @@ See what's changed in the application over time by viewing [the changelog](Chang
 
 ## Donate
 
-Buy me a hot apple cider for providing this script open source and for free :)
+Buy [deadlydog](https://github.com/deadlydog/MoveFilesIntoDateDirectories) a hot apple cider for providing this script open source and for free :)
+Check out my GitHub sponsors if you would like to support my contribution by buying me a boba!
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/deadlydogDan/2USD)

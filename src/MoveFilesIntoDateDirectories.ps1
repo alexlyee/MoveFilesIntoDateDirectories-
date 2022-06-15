@@ -21,7 +21,10 @@ Param
 	[string] $TargetDirectoriesDateScope = 'Day',
 
 	[Parameter(Mandatory = $false, HelpMessage = 'If provided, the script will overwrite existing files instead of reporting an error the the file already exists.')]
-	[switch] $Force
+	[switch] $Force,
+
+	[Parameter(Mandatory = $false, HelpMessage = 'If provided, the script will rename existing files to eliminate conflicts instead of reporting an error the the file already exists.')]
+	[switch] $Rename
 )
 
 Process
@@ -34,12 +37,25 @@ Process
 		[DateTime] $fileDate = $file.LastWriteTime
 		[string] $dateDirectoryName = Get-FormattedDate -date $fileDate -dateScope $TargetDirectoriesDateScope
 		[string] $dateDirectoryPath = Join-Path -Path $TargetDirectoryPath -ChildPath $dateDirectoryName
+        [string] $fileName = $file.Name
+        [string] $fileFullPath = $file.FullName
+        [string] $filePath = Split-Path -Path $fileFullPath
+        $extension = [System.IO.Path]::GetExtension($fileFullPath);
 
-		Ensure-DirectoryExists -directoryPath $dateDirectoryPath
+		Ensure-DirectoryExists -directoryPath $dateDirectoryPath 
+        <# yes, I know these two lines could be optimised massively.. also idk how to pass vars as ref in powershell #>
+        if ($Rename) { 
+            while (Test-Path -Path "$($dateDirectoryPath)/$($fileName)") { 
+                $randomName = [System.IO.Path]::ChangeExtension([System.IO.Path]::GetRandomFileName(), $extension)
+                Write-Host "Changing File $($fileFullPath) to $randomName"
+                Rename-Item $fileFullPath $randomName
+                $fileFullPath = "$(Split-Path -Path $fileFullPath)/$($randomName)"
+                $fileName = $randomName
+            } 
+        }
 
-		[string] $filePath = $file.FullName
-		Write-Information "Moving file '$filePath' into directory '$dateDirectoryPath'."
-		Move-Item -Path $filePath -Destination $dateDirectoryPath -Force:$Force
+		Write-Information "Moving file '$fileFullPath' into directory '$dateDirectoryPath'."
+		Move-Item -Path $fileFullPath -Destination $dateDirectoryPath -Force:$Force
 	}
 }
 

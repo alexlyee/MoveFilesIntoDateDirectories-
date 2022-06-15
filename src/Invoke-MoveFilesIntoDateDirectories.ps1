@@ -3,11 +3,12 @@
 
 # Specify the parameters to call the cmdlet with.
 [hashtable] $scriptParameters = @{
-	SourceDirectoryPath = 'C:\Dans\Imported Photos\NotByDateYet'
-	#SourceDirectoryDepthToSearch = 2
-	TargetDirectoryPath = 'C:\Dans\Imported Photos'
-	TargetDirectoriesDateScope = 'Day'	# Hour, Day, Month, or Year
+	SourceDirectoryPath = 'C:\Users\alexo\Desktop\New'
+	SourceDirectoryDepthToSearch = 0
+	TargetDirectoryPath = 'C:\Users\alexo\Desktop\New'
+	TargetDirectoriesDateScope = 'Month'	# Hour, Day, Month, or Year
 	Force = $false
+    Rename = $true
 }
 
 # Run the cmdlet using the specified parameters.
